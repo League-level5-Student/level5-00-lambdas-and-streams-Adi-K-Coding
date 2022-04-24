@@ -24,13 +24,15 @@ public class StreamSorter {
 	int[] sortArray(int[] arr) {
 
 		IntStream x = Arrays.stream(arr).sorted();
-		x.forEach((number) -> System.out.print(number + " "));
+//		.forEach((number) -> System.out.print(number + " "));
 
 		return x.toArray();
 	}
 
 	List<String> sortList(List<String> list) {
-		return null;
+		Stream strings = list.stream().sorted();
+		
+		return (List<String>) strings.collect(Collectors.toList());
 	}
 
 	// =================== DO NOT MODIFY THE CODE BELOW ======================
