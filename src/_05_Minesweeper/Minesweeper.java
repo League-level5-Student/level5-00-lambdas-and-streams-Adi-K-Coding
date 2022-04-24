@@ -75,8 +75,8 @@ public class Minesweeper extends PApplet {
 	 * the stream match the condition
 	 */
 	boolean checkWin() {
-		cells.stream().filter((cell) -> cell.mine).count());
-		return false;
+		long count = cells.stream().filter((cell) -> cell.mine && cell.revealed == false).count();
+		return count == 0;
 	}
 
 	/*
@@ -91,7 +91,13 @@ public class Minesweeper extends PApplet {
 	 * cells with '-' should be revealed - - - -
 	 */
 	void revealCell(Cell cell) {
-
+		if (cell.mine == false) {
+			cell.revealed = true;
+			if (cell.minesAround == 0) {
+				List<Cell> n = getNeighbors(cell);
+				n.stream().forEach((c) -> revealCell(c));
+			}
+		}
 	}
 
 	/*
@@ -104,7 +110,12 @@ public class Minesweeper extends PApplet {
 	 * number of 1s, i.e. mines
 	 */
 	void setNumberOfSurroundingMines() {
+		cells.stream().forEach((x) -> {
+			getNeighbors(x).stream().map((y) -> y.mine).reduce(0, (next, acc) -> {
+				return acc+next;
+			});
 
+		});
 	}
 
 	@Override
