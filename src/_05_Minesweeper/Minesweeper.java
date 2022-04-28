@@ -111,10 +111,14 @@ public class Minesweeper extends PApplet {
 	 */
 	void setNumberOfSurroundingMines() {
 		cells.stream().forEach((x) -> {
-			getNeighbors(x).stream().map((y) -> y.mine).reduce(0, (next, acc) -> {
-				return acc+next;
-			});
-
+			getNeighbors(x).stream().mapToInt((y) -> {
+				if(y.mine) {
+					return 1;	
+				}else {
+					return 0;
+				}
+			}).reduce(0, (next, acc) -> acc+next);
+			
 		});
 	}
 
